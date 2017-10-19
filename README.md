@@ -16,4 +16,4 @@
     * \alpha <- c(2,2,2,5,5,5)
     * \beta <- c(5,5,5,2,2,2)
   
-  * * 詳しくはsim-model-bLDA.Rを参照
+  * \* 詳しくはsim-model-bLDA.Rを参照
