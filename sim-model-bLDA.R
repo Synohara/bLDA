@@ -15,6 +15,6 @@ d_bLDA <- data.frame()
   for (n in 1:N) {
     z <- sample(K, num_items_by_n[n], prob=theta[n,], replace=TRUE)
     balance <- rbeta(num_items_by_n[n],a[as.integer(which.max(theta[n,]))],b[as.integer(which.max(theta[n,]))]) #文書の中で最頻のトピックのインデックスを選んでくる
-    item <- sapply(z, function(k) sample(I, 1, prob=phi[k,]))
-    d_bLDA <- rbind(d_bLDA, data.frame(PersonID=n, ItemID=item,Balance=balance))
+    word <- sapply(z, function(k) sample(I, 1, prob=phi[k,]))
+    d_bLDA <- rbind(d_bLDA, data.frame(DocumentID=n, WordID=word,Balance=balance))
   }
