@@ -1,0 +1,36 @@
+## bLDAの生成過程
+
+1. For トピックk = $1,...,K$
+
+(a) 単語分布を生成　$\phi \sim Dirichlet(\beta)$
+
+2. For 文書 $d = 1,...,D$
+(a) トピック分布を生成　$\theta_d \sim Categorical(\alpha)$
+(b) For 単語 $n = 1,...,N_d$
+    1. トピックを生成　$z_{dn} \sim Categorical(\theta_d)$
+        * 単語を生成　$w_{dn} \sim Categorical(\phi_{z_{dn}})$
+        * 予算を生成　$b_{dn} \sim Beta(\psi_{z_{dn}})$
+
+## bDTMの生成過程
+(1) For トピック$k = 1,...,K$
+    (a) 単語分布を生成　$\phi_k \sim Dirichlet(\beta)$
+(2) For 文書 $d = 1,...,D_1$
+    (a) トピック分布を生成　$\theta_{1d} \sim Categorical(\alpha_0)$
+    (b) For 単語 $n = 1,...,N_{1d}$
+        * トピックを生成　$z_{1dn} \sim Categorical(\theta_d)$
+            * 単語を生成　$w_{1dn} \sim Categorical(\phi_{z_{1dn}})$
+            * 予算を生成　$b_{1dn} \sim Beta(\psi_{z_{1dn}})$
+(3) For 時間 $t = 2,...,T$
+
+    (a) For トピック$k = 1,...,K$
+        1. 単語分布を生成　$\phi_k \sim Dirichlet(\beta)$
+        2. 予算分布を更新　$\psi_{tk} ＝ \kappa_d\epsilon_{t-1,m}+(1-\kappa_d)\psi_{t-1,k}$
+      
+    (b) For 文書 $d = 1,...,D_t$
+        1. 事前トピック分布を生成　$\pi_{t-1,d} \sim Dirichlet(\alpha_0)$
+            * トピック分布を更新　$\theta_{td} =
+      \lambda_d\pi_{t-1,m}+(1-\lambda_d)\theta_{t-1,m}$
+                * For 単語 $n = 1,...,N_{td}$
+                    1. トピックを生成　$z_{tdn} \sim Categorical(\theta_{td})$
+                        * 単語を生成　$w_{tdn} \sim Categorical(\phi_{z_{tdn}})$
+                        * 予算を生成　$b_{tdn} \sim Beta(\psi_{tz_{dn}})$
