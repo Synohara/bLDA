@@ -15,13 +15,17 @@ parameters {
   
   simplex[I] phi[K];
   simplex[K] theta[N];
-  vector<lower=0,upper=9>[2] ab[K];
+  vector<lower=2,upper=6>[2] ab[K];
+  vector[2] ab0;
+  vector[2] ab1;
 
 }
 
 model {
   for (k in 1:K)
     phi[k] ~ dirichlet(Beta);
+    ab[1] ~ normal(ab0[1],ab0[2]);
+    ab[2] ~ normal(ab1[1],ab1[2]);
   for (n in 1:N)
     theta[n] ~ dirichlet(Alpha);
   // likelihood
@@ -29,7 +33,7 @@ model {
     real eta[K];
     real gamma[K];
     for (k in 1:K){
-      gamma[k] = log(theta[DocumentID[e],k]) + beta_lpdf(balance[e] | ab[k,1],ab[k,2]);
+      gamma[k] = log(theta[DocumentID[e],k]) + normal_lpdf(balance[e] | ab[k,1],ab[k,2]);
       eta[k] = log(theta[DocumentID[e],k]) + log(phi[k,WordID[e]]);
     }
     target += log_sum_exp(gamma);

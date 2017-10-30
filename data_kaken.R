@@ -2,6 +2,12 @@ library(tm)
 library(RMeCab)
 
 parsed <- RMeCab::docMatrixDF(kaken_informatics[, '研究概要'], pos = c("名詞", "形容詞", "動詞"),minFreq = 10)
+parsed <- parsed[,-3598]
+parsed <- parsed[,-11756]
+balance <- kaken_informatics[, '総配分額']
+balance <- balance[-3598]
+balance <- balance[-11756]
+balance <- as.numeric(balance)
 stopwords <- c("!", "!!", "!!!", "!!!!????", "\")", "(\"", "(´･_･`)", "(•", ")(", ")。", "+", "...※", ".@",
                "\"", "#", "&", "'", "(", ")", ",", "-", ".", "...", "/", "0", "1", "10", "1000", "14", "2",
                "2Z", "3", "30", "3M", "3R", "4", "4P", "5", "6", "7", "8", "80", "9", "00", "04", "085",
@@ -17,10 +23,13 @@ stopwords <- c("!", "!!", "!!!", "!!!!????", "\")", "(\"", "(´･_･`)", "(•
 parsed <- parsed[setdiff(rownames(parsed), stopwords), ]
 #parsed <- parsed[setdiff(rownames(parsed), stop), ]
 
+
 # 1回しか出現しない Termを除外 
 parsed <- parsed[!(rowSums(parsed) <= 1), ]
+parsed <- parsed[,!(is.na(balance))]
 # Term を含まない Document,Blance は削除
-balance <- kaken_informatics[, '総配分額']/max(kaken_informatics[, '総配分額'])
+balance <- balance[!(is.na(balance))]
+balance <- balance/max(balance)
 balance <- balance[!(colSums(parsed) == 0)] 
 balance <- balance * 10 + 0.3
 balance[which(balance >= 1)] <- 1
