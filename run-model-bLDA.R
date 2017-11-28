@@ -16,7 +16,7 @@ data <- list(
 )
 
 stanmodel <- stan_model(file='bLDA/bLDA.stan')
-fit_nuts_bLDA <- sampling(stanmodel, data=data, seed=123)
-#fit_vb_bLDA <- vb(stanmodel, data=data, seed=123)
+#fit_nuts_bLDA <- sampling(stanmodel, data=data, seed=123)
+fit_vb_bLDA_11_17 <- vb(stanmodel, data=data, seed=123)
 
 save.image('output/result-model11-8.RData')
